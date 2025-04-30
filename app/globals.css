@@ -53,7 +53,7 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+  --primary: #E7C9A5;
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -124,6 +124,7 @@
 }
 
 @layer components {
+  /*Book Overview*/
   .book-overview {
     @apply flex flex-col-reverse items-center gap-12 sm:gap-32 xl:flex-row xl:gap-8
   }
@@ -153,6 +154,13 @@
   }
 
   .book-overview_btn {
-    @apply mt-4 min-h-14 w-fit bg-[#E7C9A5] text-dark-100 hover:bg-primary/90 max-md:w-full;
+    @apply mt-4 min-h-14 w-fit cursor-pointer bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full;
+  }
+}
+
+@layer components {
+  /*Root*/
+  .root-container {
+    @apply flex min-h-screen flex-1 flex-col bg-pattern bg-cover bg-top bg-dark-100 px-5 xs:px-10 md:px-16;
   }
 }

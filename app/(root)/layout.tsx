@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
-    <main className="root-container bg-blue-950">
+    <main className="root-container">
       <div className="mx-auto max-w-7xl">
         <Header />
         <div className="mt-20 pb-20">{children}</div>
