@@ -156,9 +156,52 @@
   .book-overview_btn {
     @apply mt-4 min-h-14 w-fit cursor-pointer bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full;
   }
+
+  /*Book Card*/
+  .book-title {
+    @apply mt-2 line-clamp-1 text-base font-semibold text-white xs:text-xl;
+  }
+
+  .book-genre {
+    @apply mt-1 line-clamp-1 text-sm italic text-light-100 xs:text-base;
+  }
+
+  .book-loaned {
+    @apply flex flex-row items-center gap-1 max-xs:justify-center;
+  }
+
+  .book-btn {
+    @apply bg-dark-600 mt-3 min-h-14 w-full font-bebas-neue text-base text-primary;
+  }
+
+  /* Book Cover */
+  .book-cover_extra_small {
+    @apply w-[28.95px] h-10;
+  }
+
+  .book-cover_small {
+    @apply w-[55px] h-[76px];
+  }
+
+  .book-cover_medium {
+    @apply w-[144px] h-[199px];
+  }
+
+  .book-cover_regular {
+    @apply xs:w-[174px] w-[114px] xs:h-[239px] h-[169px];
+  }
+
+  .book-cover_wide {
+    @apply xs:w-[296px] w-[256px] xs:h-[404px] h-[354px];
+  }
+
+  /* Book List */
+  .book-list {
+    @apply mt-10 flex flex-wrap gap-5 max-xs:justify-between xs:gap-10;
+  }
 }
 
-@layer components {
+@layer utilities {
   /*Root*/
   .root-container {
     @apply flex min-h-screen flex-1 flex-col bg-pattern bg-cover bg-top bg-dark-100 px-5 xs:px-10 md:px-16;
