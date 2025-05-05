@@ -2,13 +2,13 @@ import { Book } from "@/types";
 import React from "react";
 import BookCard from "./BookCard";
 
-interface props {
+interface Props {
   title: string;
   books: Book[];
   containerClassName?: string;
 }
 
-const BookList = ({title, books, containerClassName}: props) => {
+const BookList = ({title, books, containerClassName}: Props) => {
   return (
     <section className={containerClassName}>
       <h2 className=" font-bebas-neue text-4xl text-light-100 ">
