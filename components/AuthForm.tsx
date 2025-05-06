@@ -48,7 +48,7 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {console.log("data is", data)};
 
   return (
     <div className="flex flex-col gap-4">
@@ -77,7 +77,7 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload />
+                      <ImageUpload {...field} onFieldChange={field.onChange} />
                     ) : (
                       <Input
                         required

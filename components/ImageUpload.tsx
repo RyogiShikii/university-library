@@ -13,7 +13,11 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import config from "@/lib/config";
 
-const ImageUpload = () => {
+const ImageUpload = ({
+  onFieldChange,
+}: {
+  onFieldChange: (file: File) => void;
+}) => {
   // State to keep track of the current upload progress (percentage)
   const [progress, setProgress] = useState(0);
 
@@ -32,6 +36,15 @@ const ImageUpload = () => {
    * returns {Promise<{signature: string, expire: string, token: string, publicKey: string}>} The authentication parameters.
    * throws {Error} Throws an error if the authentication request fails.
    */
+  //need to be controlled by form
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if(file){
+      onFieldChange(file);
+    }
+    console.log("file is:", file)
+  }
+
   const authenticator = async () => {
     try {
       // Perform the request to the upload authentication endpoint.
@@ -124,14 +137,17 @@ const ImageUpload = () => {
   return (
     <>
       {/* File input element using React ref */}
-      <Input type="file" ref={fileInputRef} />
+      <Input type="file" ref={fileInputRef} className="cursor-pointer" onChange={handleFileChange}/>
       {/* Button to trigger the upload process */}
-      <Button onClick={handleUpload}>
+      
+      {/* Display the current upload progress */}
+      <progress value={progress} max={100} className="w-full"></progress>
+      <Button onClick={(e) => {
+        e.preventDefault();
+        handleUpload();
+      }} className="cursor-pointer">
         Upload file
       </Button>
-      <br />
-      {/* Display the current upload progress */}
-      Upload progress: <progress value={progress} max={100}></progress>
     </>
   );
 };
