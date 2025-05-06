@@ -16,7 +16,7 @@ import config from "@/lib/config";
 const ImageUpload = ({
   onFieldChange,
 }: {
-  onFieldChange: (file: File) => void;
+  onFieldChange: (url: string | undefined) => void;
 }) => {
   // State to keep track of the current upload progress (percentage)
   const [progress, setProgress] = useState(0);
@@ -37,13 +37,6 @@ const ImageUpload = ({
    * throws {Error} Throws an error if the authentication request fails.
    */
   //need to be controlled by form
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if(file){
-      onFieldChange(file);
-    }
-    console.log("file is:", file)
-  }
 
   const authenticator = async () => {
     try {
@@ -117,6 +110,7 @@ const ImageUpload = ({
         abortSignal: abortController.signal,
       });
       console.log("Upload response:", uploadResponse);
+      onFieldChange(uploadResponse.url);
     } catch (error) {
       // Handle specific error types provided by the ImageKit SDK.
       if (error instanceof ImageKitAbortError) {
@@ -137,7 +131,7 @@ const ImageUpload = ({
   return (
     <>
       {/* File input element using React ref */}
-      <Input type="file" ref={fileInputRef} className="cursor-pointer" onChange={handleFileChange}/>
+      <Input type="file" ref={fileInputRef} className="cursor-pointer"/>
       {/* Button to trigger the upload process */}
       
       {/* Display the current upload progress */}
