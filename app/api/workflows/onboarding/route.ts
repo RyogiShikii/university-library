@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
+import config from "@/lib/config";
 
 type UserState = "non-active" | "active";
 
@@ -38,10 +39,20 @@ const getUserState = async (email: string): Promise<UserState> => {
 };
 
 export const { POST } = serve<InitialData>(async (context) => {
-  const { email } = context.requestPayload;
+  const { email, fullName } = context.requestPayload;
 
-  await context.run("new-signup", async () => {
-    await sendEmail("Welcome to the platform", email);
+  //welcom Email
+  await context.api.resend.call("new-signup", {
+    token: config.env.resendToken,
+    body: {
+      from: "Welcom <welcome@danielportfolio.ca>",
+      to: [email],
+      subject: "Welcome to BookWise",
+      html: `<p>Welcome ${fullName}!</p>`,
+    },
+    headers: {
+      "content-type": "application/json",
+    },
   });
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
