@@ -63,20 +63,33 @@ export const { POST } = serve<InitialData>(async (context) => {
     });
 
     if (state === "non-active") {
-      await context.run("send-email-non-active", async () => {
-        await sendEmail("Email to non-active users", email);
+      await context.api.resend.call("send-email-non-active", {
+        token: config.env.resendToken,
+        body: {
+          from: "Welcom <welcome@danielportfolio.ca>",
+          to: [email],
+          subject: "Long Time No See On Bookwise",
+          html: `<p>Hi ${fullName}! It's time to get some new books.</p>`,
+        },
+        headers: {
+          "content-type": "application/json",
+        },
       });
     } else if (state === "active") {
-      await context.run("send-email-active", async () => {
-        await sendEmail("Send newsletter to active users", email);
+      await context.api.resend.call("send-email-active", {
+        token: config.env.resendToken,
+        body: {
+          from: "Welcom <welcome@danielportfolio.ca>",
+          to: [email],
+          subject: "Well done!",
+          html: `<p>Hi ${fullName}!Check our new books.</p>`,
+        },
+        headers: {
+          "content-type": "application/json",
+        },
       });
     }
 
     await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30);
   }
 });
-
-async function sendEmail(message: string, email: string) {
-  // Implement email sending logic here
-  console.log(`Sending ${message} email to ${email}`);
-}
