@@ -13,11 +13,14 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import config from "@/lib/config";
 
-const ImageUpload = ({
-  onFieldChange,
-}: {
-  onFieldChange: (url: string | undefined) => void;
-}) => {
+interface Props {
+  type: "image" | "video";
+  folder: string;
+  checks?: string;
+  onFieldChange: (value: string | undefined) => void;
+}
+
+const FileUpload = ({ type, folder, checks, onFieldChange }: Props) => {
   // State to keep track of the current upload progress (percentage)
   const [progress, setProgress] = useState(0);
 
@@ -82,6 +85,34 @@ const ImageUpload = ({
     // Extract the first file from the file input
     const file = fileInput.files[0];
 
+    const imageTypes = ["image/jpeg", "image/png", "image/webp"];
+    const videoTypes = ["video/mp4", "video/quicktime"];
+    const maxImageSize = 5 * 1024 * 1024; // 5MB
+    const maxVideoSize = 50 * 1024 * 1024; // 50MB
+
+    const isImage = type === "image";
+    const isVideo = type === "video";
+
+    if (isImage && !imageTypes.includes(file.type)) {
+      alert("Only support type for jpeg, png and webp");
+      return;
+    }
+
+    if (isVideo && !videoTypes.includes(file.type)) {
+      alert("Only support mp4 and quicktime");
+      return;
+    }
+
+    if (isImage && file.size > maxImageSize) {
+      alert("cannot upload image over 5MB");
+      return;
+    }
+
+    if (isVideo && file.size > maxVideoSize) {
+      alert("Cannot upload video over 50MB");
+      return;
+    }
+
     // Retrieve authentication parameters for the upload.
     let authParams;
     try {
@@ -108,6 +139,8 @@ const ImageUpload = ({
         },
         // Abort signal to allow cancellation of the upload if needed.
         abortSignal: abortController.signal,
+        folder: folder,
+        checks: checks,
       });
       console.log("Upload response:", uploadResponse);
       onFieldChange(uploadResponse.url);
@@ -131,19 +164,27 @@ const ImageUpload = ({
   return (
     <>
       {/* File input element using React ref */}
-      <Input type="file" ref={fileInputRef} className="cursor-pointer"/>
+      <Input
+        type="file"
+        ref={fileInputRef}
+        className="cursor-pointer"
+        accept={type === "image" ? "image/*" : "video/*"}
+      />
       {/* Button to trigger the upload process */}
-      
+
       {/* Display the current upload progress */}
       <progress value={progress} max={100} className="w-full"></progress>
-      <Button onClick={(e) => {
-        e.preventDefault();
-        handleUpload();
-      }} className="cursor-pointer">
+      <Button
+        onClick={(e) => {
+          e.preventDefault();
+          handleUpload();
+        }}
+        className="cursor-pointer"
+      >
         Upload file
       </Button>
     </>
   );
 };
 
-export default ImageUpload;
+export default FileUpload;

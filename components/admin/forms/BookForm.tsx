@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
-import ImageUpload from "../../ImageUpload";
+import FileUpload from "../../FileUpload";
 import { useRouter } from "next/navigation";
 import { Book } from "@/types";
 import { bookSchema } from "@/lib/validations";
@@ -173,7 +173,13 @@ const BookForm = ({ type, ...book }: Props) => {
               <FormLabel className="text-base font-normal text-dark-500">
                 Book Image
               </FormLabel>
-              <FormControl>{/*File Upload Component */}</FormControl>
+              <FormControl>
+                <FileUpload
+                  onFieldChange={field.onChange}
+                  type="image"
+                  folder="/images"
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -219,7 +225,13 @@ const BookForm = ({ type, ...book }: Props) => {
               <FormLabel className="text-base font-normal text-dark-500">
                 Book Trailer
               </FormLabel>
-              <FormControl>{/*File Upload Component */}</FormControl>
+              <FormControl>
+                <FileUpload
+                  onFieldChange={field.onChange}
+                  type="video"
+                  folder="/videos"
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -246,7 +258,7 @@ const BookForm = ({ type, ...book }: Props) => {
         />
 
         <Button type="submit" className="book-form_btn text-white">
-            Add Book To Library
+          Add Book To Library
         </Button>
       </form>
     </Form>
