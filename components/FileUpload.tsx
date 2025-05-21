@@ -17,10 +17,11 @@ interface Props {
   type: "image" | "video";
   folder: string;
   checks?: string;
+  value?: string
   onFieldChange: (value: string | undefined) => void;
 }
 
-const FileUpload = ({ type, folder, checks, onFieldChange }: Props) => {
+const FileUpload = ({ type, folder, checks, value, onFieldChange }: Props) => {
   // State to keep track of the current upload progress (percentage)
   const [progress, setProgress] = useState(0);
 
