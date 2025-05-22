@@ -62,12 +62,15 @@ const BookForm = ({ type, ...book }: Props) => {
     const result = await createBook(values);
 
     if (result.success) {
-      toast.success("The book has been created successfully");
+      toast.success("The book has been created successfully", {
+        position: "top-center",
+      });
 
       router.push(`/admin/books/${result.data[0].id}`);
     } else {
       toast.error("Something Wrong", {
         description: result.message,
+        position: "top-center",
       });
     }
   };

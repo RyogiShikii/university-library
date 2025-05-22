@@ -8,6 +8,7 @@ import {
   upload,
 } from "@imagekit/next";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -17,7 +18,7 @@ interface Props {
   type: "image" | "video";
   folder: string;
   checks?: string;
-  value?: string
+  value?: string;
   onFieldChange: (value: string | undefined) => void;
 }
 
@@ -119,7 +120,9 @@ const FileUpload = ({ type, folder, checks, value, onFieldChange }: Props) => {
     try {
       authParams = await authenticator();
     } catch (authError) {
-      console.error("Failed to authenticate for upload:", authError);
+      toast.error("Failed to authenticate for upload", {
+        position: "top-center",
+      });
       return;
     }
     const { signature, expire, token, publicKey } = authParams;
@@ -143,20 +146,38 @@ const FileUpload = ({ type, folder, checks, value, onFieldChange }: Props) => {
         folder: folder,
         checks: checks,
       });
-      console.log("Upload response:", uploadResponse);
+
+      toast.success("Your file has been uploaded.", {
+        position: "top-center",
+      });
       onFieldChange(uploadResponse.url);
     } catch (error) {
       // Handle specific error types provided by the ImageKit SDK.
       if (error instanceof ImageKitAbortError) {
+        toast.error("Upload aborted", {
+          position: "top-center",
+        });
         console.error("Upload aborted:", error.reason);
       } else if (error instanceof ImageKitInvalidRequestError) {
+        toast.error("Invalid request", {
+          position: "top-center",
+        });
         console.error("Invalid request:", error.message);
       } else if (error instanceof ImageKitUploadNetworkError) {
+        toast.error("Network error", {
+          position: "top-center",
+        });
         console.error("Network error:", error.message);
       } else if (error instanceof ImageKitServerError) {
+        toast.error("Server error", {
+          position: "top-center",
+        });
         console.error("Server error:", error.message);
       } else {
         // Handle any other errors that may occur.
+        toast.error("Upload error", {
+          position: "top-center",
+        });
         console.error("Upload error:", error);
       }
     }
